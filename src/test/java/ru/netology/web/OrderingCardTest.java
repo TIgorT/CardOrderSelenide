@@ -12,6 +12,7 @@ public class OrderingCardTest {
 
 
     @Test
+        // Заполнение всех полей данной формы валидными значениями
     void orderOfTheCardIsTheTestFirst() {
         open("http://localhost:9999");
         $("[data-test-id=name] input").setValue("Велев Максим");
@@ -22,6 +23,7 @@ public class OrderingCardTest {
     }
 
     @Test
+        // Добавление в поле "Ф.И." Отчества с использованием пробелов
     void orderOfTheCardIsTheTestSecond() {
         open("http://localhost:9999");
         $("[data-test-id=name] input").setValue("Велев Максим Владимирович");
@@ -32,6 +34,7 @@ public class OrderingCardTest {
     }
 
     @Test
+        // Добавление в поле "Ф.И." Отчества с использованием символа дефис
     void orderOfTheCardIsTheTestThird() {
         open("http://localhost:9999");
         $("[data-test-id=name] input").setValue("Велев-Максим-Владимирович");
@@ -42,6 +45,7 @@ public class OrderingCardTest {
     }
 
     @Test
+        // Добавление в поле "Ф.И." Отчества с маленькой буквы
     void orderOfTheCardIsTheTestFourth() {
         open("http://localhost:9999");
         $("[data-test-id=name] input").setValue("велев-максим-владимирович");
@@ -52,9 +56,10 @@ public class OrderingCardTest {
     }
 
     @Test
+        // Заполнение поля "Ф.И."  невалидными значениями
     void orderOfTheCardIsTheTestFifth() {
         open("http://localhost:9999");
-        $("[data-test-id=name] input").setValue("Velev Maxim Vladimirovich");
+        $("[data-test-id=name] input").setValue("Velev Maxim");
         $("[data-test-id=phone] input").setValue("+79645851953");
         $("[data-test-id=agreement]").click();
         $("button").click();
@@ -62,7 +67,20 @@ public class OrderingCardTest {
     }
 
     @Test
+        // Пусто поле "Ф.И."
     void orderOfTheCardIsTheTestSixth() {
+        open("http://localhost:9999");
+        $("[data-test-id=name] input").setValue("");
+        $("[data-test-id=phone] input").setValue("+79645851953");
+        $("[data-test-id=agreement]").click();
+        $("button").click();
+        $("[data-test-id=name].input_invalid .input__sub").shouldHave(exactText("Поле обязательно для заполнения"));
+    }
+
+
+    @Test
+        // Заполнение поля "Мобильный телефон"  невалидными  значениями
+    void orderOfTheCardIsTheTestSeventh() {
         open("http://localhost:9999");
         $("[data-test-id=name] input").setValue("Велев Максим");
         $("[data-test-id=phone] input").setValue("7+9645851953");
@@ -72,26 +90,34 @@ public class OrderingCardTest {
     }
 
     @Test
-    void orderOfTheCardIsTheTestSeventh() {
+        // Пустое поле "Мобильный телефон"
+    void orderOfTheCardIsTheTestEighth() {
+        open("http://localhost:9999");
+        $("[data-test-id=name] input").setValue("Велев Максим");
+        $("[data-test-id=phone] input").setValue("");
+        $("[data-test-id=agreement]").click();
+        $("button").click();
+        $("[data-test-id=phone].input_invalid .input__sub").shouldHave(exactText("Поле обязательно для заполнения"));
+    }
+
+    @Test
+        // Заполнение формы валидными значениями без использования чекбокса
+    void orderOfTheCardIsTheTestNinth() {
         open("http://localhost:9999");
         $("[data-test-id=name] input").setValue("Велев Максим");
         $("[data-test-id=phone] input").setValue("+79645851953");
         $("button").click();
-        $("[data-test-id=agreement]").shouldHave(exactText("Я соглашаюсь с условиями обработки и использования моих персональных данных и разрешаю сделать запрос в бюро кредитных историй"));
+        $("[data-test-id=agreement].input_invalid .checkbox__text").shouldHave(exactText("Я соглашаюсь с условиями обработки и использования моих персональных данных и разрешаю сделать запрос в бюро кредитных историй"));
     }
 
     @Test
-    void orderOfTheCardIsTheTestEighth() {
+        // Пустая форма
+    void orderOfTheCardIsTheTestTenth() {
         open("http://localhost:9999");
+        $("[data-test-id=name] input").setValue("");
+        $("[data-test-id=phone] input").setValue("");
         $("button").click();
         $("[data-test-id=name].input_invalid .input__sub").shouldHave(exactText("Поле обязательно для заполнения"));
     }
 
-    @Test
-    void orderOfTheCardIsTheTestNinth() {
-        open("http://localhost:9999");
-        $("[data-test-id=name] input").setValue("Велев Максим");
-        $("button").click();
-        $("[data-test-id=phone].input_invalid .input__sub").shouldHave(exactText("Поле обязательно для заполнения"));
-    }
 }
